@@ -12,17 +12,27 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build APK inside official Kivy Buildozer container
+        shell: bash
         run: |
+          set -o pipefail
           sudo docker run --rm \
             -v "${{ github.workspace }}":/home/user/hostcwd \
             kivy/buildozer:latest \
             bash -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
 
-      - name: Show last 100 lines if failed
+      - name: Show last 150 lines if failed
         if: failure()
-        run: tail -n 100 build_log.txt
+        run: tail -n 150 build_log.txt
+
+      - name: Upload full log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-build-log
+          path: build_log.txt
 
       - name: Upload APK
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: smartvision-apk
