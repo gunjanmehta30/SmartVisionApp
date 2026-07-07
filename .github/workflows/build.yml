@@ -16,9 +16,10 @@ jobs:
         run: |
           set -o pipefail
           sudo docker run --rm \
+            --entrypoint bash \
             -v "${{ github.workspace }}":/home/user/hostcwd \
             kivy/buildozer:latest \
-            bash -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
+            -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
 
       - name: Show last 150 lines if failed
         if: failure()
