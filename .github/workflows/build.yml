@@ -13,10 +13,14 @@ jobs:
 
       - name: Build APK inside official Kivy Buildozer container
         run: |
-          docker run --rm \
+          sudo docker run --rm \
             -v "${{ github.workspace }}":/home/user/hostcwd \
             kivy/buildozer:latest \
-            bash -c "yes | buildozer android debug"
+            bash -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
+
+      - name: Show last 100 lines if failed
+        if: failure()
+        run: tail -n 100 build_log.txt
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
