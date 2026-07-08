@@ -17,6 +17,7 @@ jobs:
           set -o pipefail
           sudo docker run --rm \
             --entrypoint bash \
+            -e NPY_NUM_BUILD_JOBS=1 \
             -v "${{ github.workspace }}":/home/user/hostcwd \
             kivy/buildozer:latest \
             -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
