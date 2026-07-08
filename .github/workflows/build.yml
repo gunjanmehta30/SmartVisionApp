@@ -1,44 +1,3 @@
-# name: Build Android APK
-
-# on:
-#   push:
-#     branches: [ main ]
-#   workflow_dispatch:
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-22.04
-#     steps:
-#       - uses: actions/checkout@v4
-
-#       - name: Build APK inside official Kivy Buildozer container
-#         shell: bash
-#         run: |
-#           set -o pipefail
-#           sudo docker run --rm \
-#             --entrypoint bash \
-#             -e NPY_NUM_BUILD_JOBS=1 \
-#             -v "${{ github.workspace }}":/home/user/hostcwd \
-#             kivy/buildozer:latest \
-#             -c "yes | buildozer android clean && yes | buildozer android debug" 2>&1 | tee build_log.txt
-
-#       - name: Show last 150 lines if failed
-#         if: failure()
-#         run: tail -n 150 build_log.txt
-
-#       - name: Upload full log always
-#         if: always()
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: full-build-log
-#           path: build_log.txt
-
-#       - name: Upload APK
-#         if: success()
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: smartvision-apk
-#           path: bin/*.apk
 # # name: Build Android APK
 
 # # on:
@@ -61,7 +20,7 @@
 # #             -e NPY_NUM_BUILD_JOBS=1 \
 # #             -v "${{ github.workspace }}":/home/user/hostcwd \
 # #             kivy/buildozer:latest \
-# #             -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
+# #             -c "yes | buildozer android clean && yes | buildozer android debug" 2>&1 | tee build_log.txt
 
 # #       - name: Show last 150 lines if failed
 # #         if: failure()
@@ -75,11 +34,93 @@
 # #           path: build_log.txt
 
 # #       - name: Upload APK
-# #         if: always()
+# #         if: success()
 # #         uses: actions/upload-artifact@v4
 # #         with:
 # #           name: smartvision-apk
 # #           path: bin/*.apk
+# # # name: Build Android APK
+
+# # # on:
+# # #   push:
+# # #     branches: [ main ]
+# # #   workflow_dispatch:
+
+# # # jobs:
+# # #   build:
+# # #     runs-on: ubuntu-22.04
+# # #     steps:
+# # #       - uses: actions/checkout@v4
+
+# # #       - name: Build APK inside official Kivy Buildozer container
+# # #         shell: bash
+# # #         run: |
+# # #           set -o pipefail
+# # #           sudo docker run --rm \
+# # #             --entrypoint bash \
+# # #             -e NPY_NUM_BUILD_JOBS=1 \
+# # #             -v "${{ github.workspace }}":/home/user/hostcwd \
+# # #             kivy/buildozer:latest \
+# # #             -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
+
+# # #       - name: Show last 150 lines if failed
+# # #         if: failure()
+# # #         run: tail -n 150 build_log.txt
+
+# # #       - name: Upload full log always
+# # #         if: always()
+# # #         uses: actions/upload-artifact@v4
+# # #         with:
+# # #           name: full-build-log
+# # #           path: build_log.txt
+
+# # #       - name: Upload APK
+# # #         if: always()
+# # #         uses: actions/upload-artifact@v4
+# # #         with:
+# # #           name: smartvision-apk
+# # #           path: bin/*.apk
+# name: Build Android APK
+
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-22.04
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Build APK inside official Kivy Buildozer container
+#         shell: bash
+#         run: |
+#           set -o pipefail
+#           sudo docker run --rm \
+#             --entrypoint bash \
+#             -e NPY_NUM_BUILD_JOBS=1 \
+#             -v "${{ github.workspace }}":/home/user/hostcwd \
+#             kivy/buildozer:latest \
+#             -c "yes | buildozer android debug" 2>&1 | tee build_log.txt
+
+#       - name: Show last 150 lines if failed
+#         if: failure()
+#         run: tail -n 150 build_log.txt
+
+#       - name: Upload full log always
+#         if: always()
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: full-build-log
+#           path: build_log.txt
+
+#       - name: Upload APK
+#         if: success()
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: smartvision-apk
+#           path: bin/*.apk
 name: Build Android APK
 
 on:
@@ -92,6 +133,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+
+      # This completely clears out the broken 3.14 cache before building
+      - name: Hard clear Buildozer cache
+        run: |
+          rm -rf .buildozer/
+          rm -rf bin/
 
       - name: Build APK inside official Kivy Buildozer container
         shell: bash
