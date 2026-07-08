@@ -20,7 +20,7 @@ jobs:
             -e NPY_NUM_BUILD_JOBS=1 \
             -v "${{ github.workspace }}":/home/user/hostcwd \
             kivy/buildozer:latest \
-            -c "buildozer android clean && yes | buildozer android debug" 2>&1 | tee build_log.txt
+            -c "yes | buildozer android clean && yes | buildozer android debug" 2>&1 | tee build_log.txt
 
       - name: Show last 150 lines if failed
         if: failure()
