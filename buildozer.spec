@@ -4,10 +4,11 @@ package.name = smartvisionapp
 package.domain = org.amdbyt
 
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas,tflite
+source.include_exts = py,png,jpg,kv,atlas,onnx
+source.include_patterns = assets/*
 
-version = 0.1
-requirements = python3,kivy
+version = 0.2
+requirements = python3,kivy,numpy,opencv,plyer
 
 orientation = portrait
 fullscreen = 0
