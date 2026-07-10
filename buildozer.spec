@@ -16,7 +16,7 @@ fullscreen = 0
 android.permissions = CAMERA
 android.api = 33
 android.minapi = 26
-android.ndk = 23c
+android.ndk = 28c
 
 android.archs = arm64-v8a
 
