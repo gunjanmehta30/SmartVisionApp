@@ -8,14 +8,16 @@ source.include_exts = py,png,jpg,kv,atlas,onnx
 source.include_patterns = assets/*
 
 version = 0.2
-requirements = hostpython3, python3, kivy, numpy, opencv, plyer
+requirements = hostpython3, python3, kivy, numpy==1.23.5, opencv, plyer
+
 orientation = portrait
 fullscreen = 0
 
 android.permissions = CAMERA
 android.api = 33
 android.minapi = 26
-android.ndk = 25b
+android.ndk = 23c
+
 android.archs = arm64-v8a
 
 [buildozer]
